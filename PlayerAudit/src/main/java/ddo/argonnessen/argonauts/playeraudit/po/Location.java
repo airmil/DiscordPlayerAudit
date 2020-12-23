@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ddo.argonnessen.argonauts.playeraudit;
+package ddo.argonnessen.argonauts.playeraudit.po;
 
 
 /**

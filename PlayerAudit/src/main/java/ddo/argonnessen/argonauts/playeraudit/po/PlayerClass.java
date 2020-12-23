@@ -1,8 +1,9 @@
 /**
  * 
  */
-package ddo.argonnessen.argonauts.playeraudit;
+package ddo.argonnessen.argonauts.playeraudit.po;
 
+import ddo.argonnessen.argonauts.playeraudit.Named;
 
 /**
  * 

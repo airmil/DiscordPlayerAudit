@@ -1,9 +1,9 @@
 package ddo.argonnessen.argonauts.discord;
 
-import ddo.argonnessen.argonauts.playeraudit.Player;
-import ddo.argonnessen.argonauts.playeraudit.PlayerAudit;
-import ddo.argonnessen.argonauts.playeraudit.Server;
 import ddo.argonnessen.argonauts.playeraudit.exception.PlayerAuditException;
+import ddo.argonnessen.argonauts.playeraudit.po.Player;
+import ddo.argonnessen.argonauts.playeraudit.po.PlayerAudit;
+import ddo.argonnessen.argonauts.playeraudit.po.Server;
 
 /**
  * discord commands

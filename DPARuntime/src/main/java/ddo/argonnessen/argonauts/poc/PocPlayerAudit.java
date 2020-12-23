@@ -12,7 +12,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonReader;
 
-import ddo.argonnessen.argonauts.playeraudit.Server;
+import ddo.argonnessen.argonauts.playeraudit.po.Server;
 
 /**
  * 
