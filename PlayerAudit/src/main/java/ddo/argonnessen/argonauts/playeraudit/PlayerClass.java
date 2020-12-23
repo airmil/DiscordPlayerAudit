@@ -7,7 +7,7 @@ package ddo.argonnessen.argonauts.playeraudit;
 /**
  * 
  */
-public class Clazz implements Named {
+public class PlayerClass implements Named {
 
 	/**
 	 * 

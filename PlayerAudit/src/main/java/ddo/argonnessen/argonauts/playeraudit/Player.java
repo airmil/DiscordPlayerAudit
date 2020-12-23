@@ -26,7 +26,7 @@ public class Player implements Named {
 	/**
 	 * 
 	 */
-	Set<Clazz> classes;
+	Set<PlayerClass> classes;
 	/**
 	 * location
 	 */
@@ -105,14 +105,14 @@ public class Player implements Named {
 	/**
 	 * @return the classes
 	 */
-	public Set<Clazz> getClasses() {
+	public Set<PlayerClass> getClasses() {
 		return classes;
 	}
 	
 	/**
 	 * @param classes the classes to set
 	 */
-	public void setClasses(Set<Clazz> classes) {
+	public void setClasses(Set<PlayerClass> classes) {
 		this.classes = classes;
 	}
 	
