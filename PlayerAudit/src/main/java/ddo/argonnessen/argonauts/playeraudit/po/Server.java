@@ -1,4 +1,4 @@
-package ddo.argonnessen.argonauts.playeraudit.po;
+package ddo.argonnessen.argonauts.playeraudit;
 
 import java.sql.Timestamp;
 import java.util.Set;

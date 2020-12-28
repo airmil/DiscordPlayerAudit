@@ -1,4 +1,4 @@
-package ddo.argonnessen.argonauts.playeraudit.po;
+package ddo.argonnessen.argonauts.playeraudit;
 
 import java.io.IOException;
 import java.io.InputStream;
