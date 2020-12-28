@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ddo.argonnessen.argonauts.common.po.Server;
+import ddo.argonnessen.argonauts.common.po.repository.ServerRepository;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package ddo.argonnessen.argonauts.poc;
+package ddo.argonnessen.argonauts.common.po.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
