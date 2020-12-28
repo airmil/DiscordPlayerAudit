@@ -14,6 +14,10 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<!-- spring -->
 		<version.spring>2.4.1</version.spring>
+		<!-- junit -->
+		<version.junit>4.13.1</version.junit>
+		<!-- mariadb -->
+		<version.mysql>8.0.22</version.mysql>
 	</properties>
 
 	<dependencyManagement>
@@ -27,6 +31,26 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-test</artifactId>
 				<version>${version.spring}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-jpa</artifactId>
+				<version>${version.spring}</version>
+			</dependency>
+			<!-- runtime scope -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${version.mysql}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<!-- testing scope -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${version.junit}</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
@@ -43,8 +67,9 @@
 		</pluginManagement>
 	</build>
 	<modules>
+		<module>DPACommon</module>
 		<module>PlayerAudit</module>
 		<module>Discord</module>
-		<module>DPARuntime</module>		
+		<module>DPARuntime</module>
 	</modules>
 </project>

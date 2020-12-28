@@ -16,6 +16,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonReader;
 
 import ddo.argonnessen.argonauts.playeraudit.exception.PlayerAuditException;
+import ddo.argonnessen.argonauts.playeraudit.po.Server;
 
 /**
  * bean to communicate with PlayerAudit

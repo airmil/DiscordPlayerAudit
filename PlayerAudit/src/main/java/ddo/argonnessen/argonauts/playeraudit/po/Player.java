@@ -1,6 +1,8 @@
-package ddo.argonnessen.argonauts.playeraudit;
+package ddo.argonnessen.argonauts.playeraudit.po;
 
 import java.util.Set;
+
+import ddo.argonnessen.argonauts.common.bean.Named;
 
 /**
  * 
