@@ -1,6 +1,10 @@
 package ddo.argonnessen.argonauts.common.po;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import ddo.argonnessen.argonauts.common.bean.Named;
 
@@ -8,12 +12,17 @@ import ddo.argonnessen.argonauts.common.bean.Named;
  * location
  */
 @Entity
-public class Location implements Named {
+public class Location implements Named, Serializable {
 
 	/**
 	 * 
 	 */
-	String hexId;
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	@Id
+	String hexid;
 	/**
 	 * 
 	 */
@@ -21,6 +30,7 @@ public class Location implements Named {
 	/**
 	 * 
 	 */
+	@Column(name = "ispublicspace")
 	Boolean isPublicSpace;
 	/**
 	 * 
@@ -31,7 +41,7 @@ public class Location implements Named {
 	 * @return the hexId
 	 */
 	public String getHexId() {
-		return hexId;
+		return hexid;
 	}
 
 	/**
@@ -39,7 +49,7 @@ public class Location implements Named {
 	 *            the hexId to set
 	 */
 	public void setHexId(String hexId) {
-		this.hexId = hexId;
+		this.hexid = hexId;
 	}
 
 	/**

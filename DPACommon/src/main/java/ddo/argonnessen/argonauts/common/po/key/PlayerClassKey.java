@@ -2,18 +2,20 @@ package ddo.argonnessen.argonauts.common.po.key;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import ddo.argonnessen.argonauts.common.bean.Named;
+import ddo.argonnessen.argonauts.common.po.Classes;
 import ddo.argonnessen.argonauts.common.po.Server;
 
 /**
- * key for {@link ddo.argonnessen.argonauts.common.po.Player}
+ * key for {@link ddo.argonnessen.argonauts.common.po.PlayerClass}
  */
 @Embeddable
-public class PlayerKey implements Named, Serializable {
+public class PlayerClassKey implements Named, Serializable {
 
 	/**
 	 * 
@@ -22,13 +24,20 @@ public class PlayerKey implements Named, Serializable {
 	/**
 	 * name
 	 */
-	private String name;
+	@Column
+	String name;
 	/**
 	 * 
 	 */
 	@ManyToOne
 	@JoinColumn(name = "servername")
 	Server server;
+	/**
+	 * class
+	 */
+	@ManyToOne
+	@JoinColumn(name = "clazz")
+	Classes classes;
 
 	/**
 	 * @return serverName
@@ -54,20 +63,36 @@ public class PlayerKey implements Named, Serializable {
 		this.name = name;
 	}
 
+	/**
+	 * @return the {@link Classes}
+	 */
+	public Classes getClasses() {
+		return classes;
+	}
+
+	/**
+	 * @param classes
+	 *            the Classes to set
+	 */
+	public void setClasses(Classes classes) {
+		this.classes = classes;
+	}
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;
 		}
-		if (obj instanceof PlayerKey) {
-			PlayerKey key = (PlayerKey) obj;
-			return key.name.equals(name) && key.server.equals(server);
+		if (obj instanceof PlayerClassKey) {
+			PlayerClassKey key = (PlayerClassKey) obj;
+			return key.name.equals(name) && key.server.equals(server) && key.classes.equals(classes);
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return (name + server).hashCode();
+		return (name + server + classes).hashCode();
 	}
+
+
 }

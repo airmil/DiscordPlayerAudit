@@ -1,5 +1,7 @@
 package ddo.argonnessen.argonauts.common.po;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -9,8 +11,12 @@ import ddo.argonnessen.argonauts.common.bean.Named;
  * available classes
  */
 @Entity
-public class Classes implements Named {
+public class Classes implements Named, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * name
 	 */

@@ -1,9 +1,16 @@
 package ddo.argonnessen.argonauts.common.po;
 
+import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import ddo.argonnessen.argonauts.common.bean.Named;
 import ddo.argonnessen.argonauts.common.po.key.PlayerKey;
@@ -12,8 +19,12 @@ import ddo.argonnessen.argonauts.common.po.key.PlayerKey;
  * 
  */
 @Entity
-public class Player implements Named {
+public class Player implements Named, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
@@ -30,26 +41,35 @@ public class Player implements Named {
 	/**
 	 * 
 	 */
+	@Transient
 	Integer totalLevel;
 	/**
-	 * 
-	 */
-	Set<PlayerClass> classes;
+	*
+	*/
+	@OneToMany
+	@JoinColumns({ @JoinColumn(name = "servername"), @JoinColumn(name = "name") })
+	Set<PlayerClass> playerClasses;
 	/**
 	 * location
 	 */
+	@ManyToOne
+	@JoinColumn(name = "hexid")
 	Location location;
 	/**
 	 * 
 	 */
+	@Column(name = "groupid")
 	Integer groupId;
 	/**
 	 * 
 	 */
-	String guild;
+	@ManyToOne
+	@JoinColumn(name = "guild")
+	Guild guild;
 	/**
 	 * 
 	 */
+	@Column(name = "inparty")
 	Boolean inParty;
 	
 	/**
@@ -113,15 +133,16 @@ public class Player implements Named {
 	/**
 	 * @return the classes
 	 */
-	public Set<PlayerClass> getClasses() {
-		return classes;
+	public Set<PlayerClass> getPlayerClasses() {
+		return playerClasses;
 	}
-	
+
 	/**
-	 * @param classes the classes to set
+	 * @param playerClasses
+	 *            the classes to set
 	 */
-	public void setClasses(Set<PlayerClass> classes) {
-		this.classes = classes;
+	public void setPlayerClasses(Set<PlayerClass> playerClasses) {
+		this.playerClasses = playerClasses;
 	}
 	
 	/**
@@ -155,14 +176,14 @@ public class Player implements Named {
 	/**
 	 * @return the guild
 	 */
-	public String getGuild() {
+	public Guild getGuild() {
 		return guild;
 	}
 	
 	/**
 	 * @param guild the guild to set
 	 */
-	public void setGuild(String guild) {
+	public void setGuild(Guild guild) {
 		this.guild = guild;
 	}
 	
@@ -181,16 +202,17 @@ public class Player implements Named {
 	}
 
 	/**
-	 * @return the serverName
+	 * @return the server
 	 */
-	public String getServerName() {
-		return key.getServerName();
+	public Server getServer() {
+		return key.getServer();
 	}
 
 	/**
-	 * @param serverName the serverName to set
+	 * @param server
+	 *            the serverName to set
 	 */
-	public void setServerName(String serverName) {
-		key.setServerName(serverName);
+	public void setServer(Server server) {
+		key.setServer(server);
 	}
 }

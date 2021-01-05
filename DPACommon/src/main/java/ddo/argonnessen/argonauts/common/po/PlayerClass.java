@@ -3,20 +3,30 @@
  */
 package ddo.argonnessen.argonauts.common.po;
 
+import java.io.Serializable;
+
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.Table;
+
+import ddo.argonnessen.argonauts.common.po.key.PlayerClassKey;
 
 /**
  * 
  */
 @Entity
-public class PlayerClass {
+@Table(name = "playerclass")
+public class PlayerClass implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * name
 	 */
-	@Id
-	Classes clazz;
+	@EmbeddedId
+	PlayerClassKey key = new PlayerClassKey();
 
 	/**
 	 * level

@@ -43,6 +43,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>ddo.argonnessen.argonauts</groupId>
+			<artifactId>DPACommon</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ddo.argonnessen.argonauts</groupId>
 			<artifactId>PlayerAudit</artifactId>
 			<version>${project.version}</version>
 		</dependency>
