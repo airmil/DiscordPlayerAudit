@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import ddo.argonnessen.argonauts.common.bean.Named;
 import ddo.argonnessen.argonauts.common.po.key.PlayerKey;
@@ -38,11 +37,7 @@ public class Player implements Named, Serializable {
 	 * 
 	 */
 	String race;
-	/**
-	 * 
-	 */
-	@Transient
-	Integer totalLevel;
+
 	/**
 	*
 	*/
@@ -114,20 +109,6 @@ public class Player implements Named, Serializable {
 	 */
 	public void setRace(String race) {
 		this.race = race;
-	}
-	
-	/**
-	 * @return the totalLevel
-	 */
-	public Integer getTotalLevel() {
-		return totalLevel;
-	}
-	
-	/**
-	 * @param totalLevel the totalLevel to set
-	 */
-	public void setTotalLevel(Integer totalLevel) {
-		this.totalLevel = totalLevel;
 	}
 	
 	/**
