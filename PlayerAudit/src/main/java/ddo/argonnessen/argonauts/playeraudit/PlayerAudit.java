@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,5 +67,12 @@ public class PlayerAudit {
 	 */
 	public Server getServer(String name) {
 		return servers.get(name);
+	}
+
+	/**
+	 * @return the names of all servers
+	 */
+	public Collection<String> getServerNames() {
+		return servers.keySet();
 	}
 }
