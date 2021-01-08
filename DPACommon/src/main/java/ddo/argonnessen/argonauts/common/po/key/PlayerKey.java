@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 
 import ddo.argonnessen.argonauts.common.bean.Named;
 import ddo.argonnessen.argonauts.common.po.Server;
+import ddo.argonnessen.argonauts.utils.Utils;
 
 /**
  * key for {@link ddo.argonnessen.argonauts.common.po.Player}
@@ -61,7 +62,7 @@ public class PlayerKey implements Named, Serializable {
 		}
 		if (obj instanceof PlayerKey) {
 			PlayerKey key = (PlayerKey) obj;
-			return key.name.equals(name) && key.server.equals(server);
+			return Utils.equals(name, key.getName()) && Utils.equals(server.getName(), key.getServer().getName());
 		}
 		return false;
 	}
@@ -69,5 +70,10 @@ public class PlayerKey implements Named, Serializable {
 	@Override
 	public int hashCode() {
 		return (name + server).hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return name + "," + server.getName(); //$NON-NLS-1$
 	}
 }

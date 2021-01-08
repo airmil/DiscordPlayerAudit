@@ -7,9 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import ddo.argonnessen.argonauts.common.bean.Named;
 import ddo.argonnessen.argonauts.common.po.key.PlayerKey;
@@ -41,8 +43,8 @@ public class Player implements Named, Serializable {
 	/**
 	*
 	*/
-	@OneToMany
-	@JoinColumns({ @JoinColumn(name = "servername"), @JoinColumn(name = "name") })
+	@OneToMany(mappedBy = "player")
+	@NotFound(action = NotFoundAction.IGNORE)
 	Set<PlayerClass> playerClasses;
 	/**
 	 * location
@@ -195,5 +197,10 @@ public class Player implements Named, Serializable {
 	 */
 	public void setServer(Server server) {
 		key.setServer(server);
+	}
+
+	@Override
+	public String toString() {
+		return key.toString();
 	}
 }

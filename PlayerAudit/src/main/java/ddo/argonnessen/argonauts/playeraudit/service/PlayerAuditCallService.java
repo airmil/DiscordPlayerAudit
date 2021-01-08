@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ddo.argonnessen.argonauts.arch.Pair;
 import ddo.argonnessen.argonauts.common.po.repository.PlayerRepository;
 import ddo.argonnessen.argonauts.common.po.repository.ServerRepository;
 import ddo.argonnessen.argonauts.playeraudit.PlayerAudit;
@@ -28,6 +29,11 @@ public class PlayerAuditCallService {
 	 * 
 	 */
 	@Autowired
+	PlayerTransformation playerTransformation = new PlayerTransformation();
+	/**
+	 * 
+	 */
+	@Autowired
 	ServerRepository serverRepository;
 	/**
 	 * 
@@ -45,10 +51,11 @@ public class PlayerAuditCallService {
 		Collection<String> serverNames = audit.getServerNames();
 		for (String name : serverNames) {
 			Server server = audit.getServer(name);
-			Set<Player> players = server.getPlayers();
-			Set<ddo.argonnessen.argonauts.common.po.Player> playerPos = convertPlayers(players);
 			ddo.argonnessen.argonauts.common.po.Server s = convertServer(server);
-			store(playerPos, s);
+			storeServer(s);
+			Set<Player> players = server.getPlayers();
+			Set<ddo.argonnessen.argonauts.common.po.Player> playerPos = convertPlayers(players, server);
+			storePlayers(playerPos);
 		}
 	}
 
@@ -56,11 +63,20 @@ public class PlayerAuditCallService {
 	 * @param playerPos
 	 * @param server
 	 */
-	void store(Set<ddo.argonnessen.argonauts.common.po.Player> playerPos, ddo.argonnessen.argonauts.common.po.Server server) {
+	void storeServer(ddo.argonnessen.argonauts.common.po.Server server) {
 		serverRepository.save(server);
+		serverRepository.flush();
+	}
+
+	/**
+	 * @param playerPos
+	 */
+	void storePlayers(Set<ddo.argonnessen.argonauts.common.po.Player> playerPos) {
 		for (ddo.argonnessen.argonauts.common.po.Player player : playerPos) {
+			System.err.println("storing " + player); //$NON-NLS-1$
 			playerRepository.save(player);
 		}
+
 	}
 
 	/**
@@ -75,10 +91,15 @@ public class PlayerAuditCallService {
 	 * convert the {@link Player}s into {@link ddo.argonnessen.argonauts.common.po.Player}s
 	 * 
 	 * @param players
+	 * @param s
 	 * @return
 	 */
-	private Set<ddo.argonnessen.argonauts.common.po.Player> convertPlayers(Set<Player> players) {
+	private Set<ddo.argonnessen.argonauts.common.po.Player> convertPlayers(Set<Player> players, Server s) {
 		Set<ddo.argonnessen.argonauts.common.po.Player> playerPos = new HashSet<>();
+		for (Player player : players) {
+			ddo.argonnessen.argonauts.common.po.Player player2 = playerTransformation.execute(new Pair<Player, Server>(player, s));
+			playerPos.add(player2);
+		}
 		return playerPos;
 	}
 }

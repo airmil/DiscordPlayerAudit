@@ -94,5 +94,8 @@ public class PlayerClassKey implements Named, Serializable {
 		return (name + server + classes).hashCode();
 	}
 
-
+	@Override
+	public String toString() {
+		return name + "," + server.getName() + "," + classes.getName(); //$NON-NLS-1$ //$NON-NLS-2$
+	}
 }
