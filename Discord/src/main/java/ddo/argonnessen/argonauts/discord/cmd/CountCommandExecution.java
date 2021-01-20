@@ -59,11 +59,11 @@ public class CountCommandExecution implements CommandExecution {
 	@SuppressWarnings("nls")
 	String getMessage(Integer count, Server s, Guild g) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("There are "); //$NON-NLS-1$
+		sb.append("There are ");
 		sb.append(count);
-		sb.append(" players"); //$NON-NLS-1$
+		sb.append(" players");
 		if (s == null) {
-			sb.append(" in DDO"); //$NON-NLS-1$
+			sb.append(" in DDO");
 		} else {
 			sb.append(" on ").append("**").append(s.getName()).append("**");
 			if (g != null) {
