@@ -12,28 +12,21 @@
 	<artifactId>DPARuntime</artifactId>
 
 	<build>
+		<finalName>dpa</finalName>
 		<plugins>
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.3.0</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>1.5.2.RELEASE</version>
 				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>ddo.argonnessen.argonauts.runtime.Main</mainClass>
-						</manifest>
-					</archive>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<finalName>${project.artifactId}</finalName>
-					<appendAssemblyId>false</appendAssemblyId>
+					<mainClass>ddo.argonnessen.argonauts.runtime.Main</mainClass>
+					<layout>JAR</layout>
 				</configuration>
 				<executions>
 					<execution>
-						<id>make-assembly</id>
 						<phase>package</phase>
 						<goals>
-							<goal>single</goal>
+							<goal>repackage</goal>
 						</goals>
 					</execution>
 				</executions>
