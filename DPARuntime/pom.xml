@@ -19,7 +19,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>ddo.argonnessen.argonauts.discord.Bot</mainClass>
+							<mainClass>ddo.argonnessen.argonauts.runtime.Main</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
