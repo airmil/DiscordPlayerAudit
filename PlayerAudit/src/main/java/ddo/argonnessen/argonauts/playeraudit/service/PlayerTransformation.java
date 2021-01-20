@@ -3,9 +3,12 @@
  */
 package ddo.argonnessen.argonauts.playeraudit.service;
 
+import static ddo.argonnessen.argonauts.playeraudit.util.PlayerAuditConstants.ANONYMOUS;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +59,11 @@ public class PlayerTransformation implements Transformation<Pair<Player, Server>
 	@Autowired
 	PlayerClassRepository playerClassesRepository;
 
+	/**
+	 * 
+	 */
+	static AtomicInteger count = new AtomicInteger(1);
+
 	@Override
 	public ddo.argonnessen.argonauts.common.po.Player execute(Pair<Player, Server> a) {
 		ddo.argonnessen.argonauts.common.po.Player player = getPlayer(a);
@@ -69,16 +77,28 @@ public class PlayerTransformation implements Transformation<Pair<Player, Server>
 	ddo.argonnessen.argonauts.common.po.Player getPlayer(Pair<Player, Server> a) {
 		Player p=a.getLeft();
 		ddo.argonnessen.argonauts.common.po.Player player = new ddo.argonnessen.argonauts.common.po.Player();
-		player.setServer(getServer(a));
+		player.getKey().setServer(getServer(a));
 		player.setGender(p.getGender());
 		player.setGroupId(p.getGroupId());
 		player.setGuild(getGuild(p));
 		player.setInParty(p.getInParty());
 		player.setLocation(getLocation(p));
-		player.setName(p.getName());
-		player.setPlayerClasses(getPlayerClasses(p, player.getServer(), player));
+		player.setName(getName(p));
+		player.setPlayerClasses(getPlayerClasses(p, player.getKey().getServer(), player));
 		player.setRace(p.getRace());
 		return player;
+	}
+
+	/**
+	 * @param p
+	 * @return name
+	 */
+	private String getName(Player p) {
+		String name = p.getName();
+		if (ANONYMOUS.equals(name)) {
+			name += "#" + count.getAndIncrement(); //$NON-NLS-1$
+		}
+		return name;
 	}
 
 	/**

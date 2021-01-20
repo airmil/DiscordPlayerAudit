@@ -30,6 +30,7 @@ public class Player implements Named, Serializable {
 	 * 
 	 */
 	@EmbeddedId
+	private
 	PlayerKey key = new PlayerKey();
 	/**
 	 * 
@@ -74,7 +75,7 @@ public class Player implements Named, Serializable {
 	 */
 	@Override
 	public String getName() {
-		return key.getName();
+		return getKey().getName();
 	}
 	
 	/**
@@ -82,7 +83,7 @@ public class Player implements Named, Serializable {
 	 */
 	@Override
 	public void setName(String name) {
-		this.key.setName(name);
+		this.getKey().setName(name);
 	}
 	
 	/**
@@ -184,23 +185,22 @@ public class Player implements Named, Serializable {
 		this.inParty = inParty;
 	}
 
-	/**
-	 * @return the server
-	 */
-	public Server getServer() {
-		return key.getServer();
-	}
-
-	/**
-	 * @param server
-	 *            the serverName to set
-	 */
-	public void setServer(Server server) {
-		key.setServer(server);
-	}
-
 	@Override
 	public String toString() {
-		return key.toString();
+		return getKey().toString();
+	}
+
+	/**
+	 * @return key
+	 */
+	public PlayerKey getKey() {
+		return key;
+	}
+
+	/**
+	 * @param key the key to set
+	 */
+	public void setKey(PlayerKey key) {
+		this.key = key;
 	}
 }

@@ -1,9 +1,6 @@
 package ddo.argonnessen.argonauts.discord;
 
-import ddo.argonnessen.argonauts.playeraudit.PlayerAudit;
-import ddo.argonnessen.argonauts.playeraudit.exception.PlayerAuditException;
-import ddo.argonnessen.argonauts.playeraudit.po.Player;
-import ddo.argonnessen.argonauts.playeraudit.po.Server;
+import ddo.argonnessen.argonauts.discord.cmd.CommandExecution;
 
 /**
  * discord commands
@@ -13,80 +10,25 @@ public enum Command {
 	/**
 	 * total online on server
 	 */
-	COUNT {
-
-		@SuppressWarnings("nls")
-		@Override
-		public String reply() {
-			PlayerAudit audit = get();
-			Server server = audit.getServer(Bot.deploymentInfo.getServer());
-			return new StringBuilder().append("Total of ").append(server.getPlayers().size()).append(" players in ")
-					.append(Bot.deploymentInfo.getServer())
-					.append(" are online").toString();
-		}
-	},
-	/**
-	 * total guildies online
-	 */
-	GCOUNT {
-
-		@SuppressWarnings("nls")
-		@Override
-		public String reply() {
-			PlayerAudit audit = get();
-			Server server = audit.getServer(Bot.deploymentInfo.getServer());
-			int count = 0;
-			for (Player p : server.getPlayers()) {
-				if (Bot.deploymentInfo.getGuild().equalsIgnoreCase(p.getGuild())) {
-					count++;
-				}
-			}
-			return new StringBuilder().append("Total of ").append(count).append(" guildies (").append(Bot.deploymentInfo.getGuild())
-					.append(") are online in ")
-					.append(Bot.deploymentInfo.getServer()).toString();
-		}
-	},
-	/**
-	 * online guildies
-	 */
-	GWHO {
-
-		@SuppressWarnings("nls")
-		@Override
-		public String reply() {
-			PlayerAudit audit = get();
-			Server server = audit.getServer(Bot.deploymentInfo.getServer());
-			StringBuilder sb = new StringBuilder().append("{");
-			boolean first = true;
-			for (Player p : server.getPlayers()) {
-				if (Bot.deploymentInfo.getGuild().equalsIgnoreCase(p.getGuild())) {
-					if (!first) {
-						sb.append(",");
-					}
-					sb.append(p.getName());
-					first = false;
-				}
-			}
-			sb.append("}");
-			return sb.toString();
-		}
-	};
+	COUNT;
 
 	/**
-	 * @return bot message
+	 * commandExecution to set
 	 */
-	public abstract String reply();
+	private CommandExecution commandExecution;
 
 	/**
-	 * @return
+	 * @return the commandExecution
 	 */
-	private static synchronized PlayerAudit get() {
-		PlayerAudit audit;
-		try {
-			audit = new PlayerAudit();
-		} catch (PlayerAuditException e) {
-			throw new RuntimeException(e);
-		}
-		return audit;
+	public CommandExecution getCommandExecution() {
+		return commandExecution;
+	}
+
+	/**
+	 * @param commandExecution
+	 *            the commandExecution to set
+	 */
+	public void setCommandExecution(CommandExecution commandExecution) {
+		this.commandExecution = commandExecution;
 	}
 }

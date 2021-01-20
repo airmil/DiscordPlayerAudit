@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import ddo.argonnessen.argonauts.arch.Pair;
 import ddo.argonnessen.argonauts.common.po.repository.PlayerRepository;
 import ddo.argonnessen.argonauts.common.po.repository.ServerRepository;
+import ddo.argonnessen.argonauts.common.query.EmptyTableQuery;
 import ddo.argonnessen.argonauts.playeraudit.PlayerAudit;
 import ddo.argonnessen.argonauts.playeraudit.exception.PlayerAuditException;
 import ddo.argonnessen.argonauts.playeraudit.po.Player;
@@ -40,6 +41,11 @@ public class PlayerAuditCallService {
 	 */
 	@Autowired
 	PlayerRepository playerRepository;
+	/**
+	 * 
+	 */
+	@Autowired
+	EmptyTableQuery query;
 
 	/**
 	 * do the actual job
@@ -47,6 +53,7 @@ public class PlayerAuditCallService {
 	 * @throws PlayerAuditException
 	 */
 	public void execute() throws PlayerAuditException {
+		query.execute();
 		PlayerAudit audit = new PlayerAudit();
 		Collection<String> serverNames = audit.getServerNames();
 		for (String name : serverNames) {
@@ -73,7 +80,6 @@ public class PlayerAuditCallService {
 	 */
 	void storePlayers(Set<ddo.argonnessen.argonauts.common.po.Player> playerPos) {
 		for (ddo.argonnessen.argonauts.common.po.Player player : playerPos) {
-			System.err.println("storing " + player); //$NON-NLS-1$
 			playerRepository.save(player);
 		}
 

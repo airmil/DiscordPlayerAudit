@@ -1,29 +1,35 @@
 package ddo.argonnessen.argonauts.discord;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Service;
+
+import ddo.argonnessen.argonauts.discord.cmd.CommandExecution;
+import ddo.argonnessen.argonauts.discord.cmd.CommandExecutionMapper;
+import ddo.argonnessen.argonauts.discord.handler.BotReadyEvent;
+import ddo.argonnessen.argonauts.discord.handler.CommandHandler;
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.GatewayDiscordClient;
+import discord4j.core.event.EventDispatcher;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
-import discord4j.core.object.entity.User;
+import discord4j.core.object.entity.channel.MessageChannel;
+import reactor.core.publisher.Flux;
 
 /**
- * main bot class
+ * bot service
  */
-public class Bot {
+@Service
+public class Bot implements CommandLineRunner {
 
-	/**
-	 * deployment info
-	 */
-	static final BotBean deploymentInfo = new BotBean();
 	/**
 	 * 
 	 */
-	private static final String DEFAULT_PROPERTIES = "/Bot.properties"; //$NON-NLS-1$
+	@Autowired
+	List<CommandExecution> map;
 
 	/**
 	 * register commands
@@ -31,60 +37,33 @@ public class Bot {
 	 * @param c
 	 * @param client
 	 */
-	static void registerCommand(Command c, GatewayDiscordClient client) {
-		String command = c.toString();
-		client.getEventDispatcher().on(MessageCreateEvent.class).map(MessageCreateEvent::getMessage)
-				.filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
-				.filter(message -> message.getContent().equalsIgnoreCase(command)).flatMap(Message::getChannel)
-				.flatMap(channel -> channel.createMessage(c.reply())).subscribe();
+	void registerCommand(GatewayDiscordClient client) {
+		CommandHandler ch = new CommandHandler();
+		EventDispatcher eventDispatcher = client.getEventDispatcher();
+		Flux<MessageCreateEvent> messageCreateEvent = eventDispatcher.on(MessageCreateEvent.class);
+		Flux<Message> map1 = messageCreateEvent.map(MessageCreateEvent::getMessage);
+		Flux<Message> filter = map1.filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false));
+		Flux<Message> filter2 = filter.filter(ch);
+		Flux<MessageChannel> flatMap = filter2.flatMap(Message::getChannel);
+		Flux<Message> flatMap2 = flatMap.flatMap(ch);
+		flatMap2.subscribe();
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		initBean(args);
-		GatewayDiscordClient client = DiscordClientBuilder.create(deploymentInfo.getToken()).build().login().block();
-		client.getEventDispatcher().on(ReadyEvent.class).subscribe(event -> {
-			User self = event.getSelf();
-			System.out.println(String.format("Logged in as %s#%s", self.getUsername(), self.getDiscriminator())); //$NON-NLS-1$
-		});
+
+	@Override
+	public void run(String... args) throws Exception {
+		GatewayDiscordClient client = DiscordClientBuilder.create(args[0]).build().login().block();
+		client.getEventDispatcher().on(ReadyEvent.class).subscribe(new BotReadyEvent());
+		registerCommand(client);
 		for (Command c : Command.values()) {
-			registerCommand(c, client);
+			Class<? extends CommandExecution> commandExecution = CommandExecutionMapper.getCommandExecution(c);
+			for (CommandExecution ce : map) {
+				if (commandExecution.equals(ce.getClass())) {
+					c.setCommandExecution(ce);
+				}
+			}
 		}
 		client.onDisconnect().block();
 	}
 
-	/**
-	 * @param args
-	 * @throws IOException
-	 */
-	@SuppressWarnings("nls")
-	private static void initBean(String[] args) {
-		Properties p = new Properties();
-		if (args.length == 0) {
-			loadDefaultProperties(p);
-		} else {
-			try {
-				p.load(new FileInputStream(args[0]));
-			} catch (IOException e) {
-				loadDefaultProperties(p);
-			}
-		}
-		deploymentInfo.guild = p.getProperty("guild");
-		deploymentInfo.server = p.getProperty("server");
-		deploymentInfo.token = p.getProperty("token");
-	}
-
-	/**
-	 * @param p
-	 * @throws IOException
-	 */
-	private static void loadDefaultProperties(Properties p) {
-		try {
-			p.load(Bot.class.getResourceAsStream(DEFAULT_PROPERTIES));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
 }
