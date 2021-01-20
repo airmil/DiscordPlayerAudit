@@ -23,6 +23,7 @@ public class CommandExecutionMapper {
 	static final Map<Command, Class<? extends CommandExecution>> map = new HashMap<>();
 	static {
 		map.put(Command.COUNT, CountCommandExecution.class);
+		map.put(Command.WHO, WhoCommandExecution.class);
 	}
 
 	/**

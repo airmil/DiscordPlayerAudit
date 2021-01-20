@@ -1,13 +1,16 @@
 package ddo.argonnessen.argonauts.discord.cmd;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ddo.argonnessen.argonauts.common.po.Guild;
+import ddo.argonnessen.argonauts.common.po.Player;
 import ddo.argonnessen.argonauts.common.po.Server;
 import ddo.argonnessen.argonauts.common.po.repository.GuildRepository;
 import ddo.argonnessen.argonauts.common.po.repository.ServerRepository;
-import ddo.argonnessen.argonauts.common.query.CountCommandQuery;
+import ddo.argonnessen.argonauts.common.query.WhoCommandQuery;
 import ddo.argonnessen.argonauts.discord.Command;
 import ddo.argonnessen.argonauts.discord.CommandBean;
 import ddo.argonnessen.argonauts.discord.CommandPayLoad;
@@ -20,13 +23,13 @@ import ddo.argonnessen.argonauts.discord.exception.CommandException;
  * 2 -> guild
  */
 @Service
-public class CountCommandExecution implements CommandExecution {
+public class WhoCommandExecution implements CommandExecution {
 
 	/**
 	 * query
 	 */
 	@Autowired
-	CountCommandQuery query;
+	WhoCommandQuery query;
 	/**
 	 * server repository
 	 */
@@ -40,27 +43,33 @@ public class CountCommandExecution implements CommandExecution {
 
 	@Override
 	public String execute(CommandBean a) throws CommandException {
-		if (!Command.COUNT.equals(a.getCommand())) {
+		if (!Command.WHO.equals(a.getCommand())) {
 			return null;
 		}
 		CommandPayLoad payload = a.getPayload();
 		Server s = getServer(payload, serverRepository);
+		if (s == null) {
+			throw new CommandException("Server must be set or use defaults"); //$NON-NLS-1$
+		}
 		Guild g = getGuild(payload, guildRepository);
-		Integer count = query.count(s, g);
-		return getMessage(count, s, g);
+		if (g == null) {
+			throw new CommandException("Guild must be set or use defaults"); //$NON-NLS-1$
+		}
+		Collection<Player> players = query.who(s, g);
+		return getMessage(players, s, g);
 	}
 
 	/**
-	 * @param count
+	 * @param players
 	 * @param s
 	 * @param g
 	 * @return
 	 */
-	String getMessage(Integer count, Server s, Guild g) {
+	String getMessage(Collection<Player> players, Server s, Guild g) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("There are "); //$NON-NLS-1$
-		sb.append(count);
-		sb.append(" players"); //$NON-NLS-1$
+		sb.append("These are "); //$NON-NLS-1$
+		sb.append(players);
+		sb.append(" the players present"); //$NON-NLS-1$
 		if (s == null) {
 			sb.append(" in DDO"); //$NON-NLS-1$
 		} else {
@@ -71,6 +80,4 @@ public class CountCommandExecution implements CommandExecution {
 		}
 		return sb.toString();
 	}
-
-
 }

@@ -60,6 +60,7 @@ public class Bot implements CommandLineRunner {
 			for (CommandExecution ce : map) {
 				if (commandExecution.equals(ce.getClass())) {
 					c.setCommandExecution(ce);
+					break;
 				}
 			}
 		}

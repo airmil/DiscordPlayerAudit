@@ -10,7 +10,11 @@ public enum Command {
 	/**
 	 * total online on server
 	 */
-	COUNT;
+	COUNT,
+	/**
+	 * who
+	 */
+	WHO;
 
 	/**
 	 * commandExecution to set
