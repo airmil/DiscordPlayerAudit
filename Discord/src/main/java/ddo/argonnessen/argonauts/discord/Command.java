@@ -14,7 +14,11 @@ public enum Command {
 	/**
 	 * who
 	 */
-	WHO;
+	WHO,
+	/**
+	 * help
+	 */
+	HELP;
 
 	/**
 	 * commandExecution to set

@@ -42,7 +42,7 @@ public interface CommandExecution {
 			}
 			Optional<Guild> g = guildRepository.findById(id);
 			if (!g.isPresent()) {
-				throw new CommandException("There is no guild with the name " + id); //$NON-NLS-1$
+				throw new CommandException("There is no guild with the name **" + id + "**"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return g.get();
 		}
@@ -60,10 +60,18 @@ public interface CommandExecution {
 			String id = payload.get(0);
 			Optional<Server> s = serverRepository.findById(id);
 			if (!s.isPresent()) {
-				throw new CommandException("There is no server with the name " + id); //$NON-NLS-1$
+				throw new CommandException("There is no server with the name **" + id + "**"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return s.get();
 		}
 		return null;
+	}
+
+	/**
+	 * @return empty message
+	 */
+	@SuppressWarnings("nls")
+	default String emptyMessage() {
+		return "";
 	}
 }

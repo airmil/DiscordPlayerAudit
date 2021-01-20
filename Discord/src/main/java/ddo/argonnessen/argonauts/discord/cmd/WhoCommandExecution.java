@@ -1,6 +1,8 @@
 package ddo.argonnessen.argonauts.discord.cmd;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +46,7 @@ public class WhoCommandExecution implements CommandExecution {
 	@Override
 	public String execute(CommandBean a) throws CommandException {
 		if (!Command.WHO.equals(a.getCommand())) {
-			return null;
+			return emptyMessage();
 		}
 		CommandPayLoad payload = a.getPayload();
 		Server s = getServer(payload, serverRepository);
@@ -65,19 +67,43 @@ public class WhoCommandExecution implements CommandExecution {
 	 * @param g
 	 * @return
 	 */
+	@SuppressWarnings("nls")
 	String getMessage(Collection<Player> players, Server s, Guild g) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("These are "); //$NON-NLS-1$
-		sb.append(players);
-		sb.append(" the players present"); //$NON-NLS-1$
-		if (s == null) {
-			sb.append(" in DDO"); //$NON-NLS-1$
+		if (players.size() == 0) {
+			sb.append("None is pressent");
+		}
+		if (players.size() > 1) {
+			sb.append("These are ");
 		} else {
-			sb.append(" on ").append(s.getName()); //$NON-NLS-1$
+			sb.append("This is ");
+		}
+		sb.append(getPlayers(players));
+		if (players.size() > 1) {
+			sb.append(" the players present");
+		} else {
+			sb.append(" the player present");
+		}
+		if (s == null) {
+			sb.append(" in DDO");
+		} else {
+			sb.append(" on **").append(s.getName()).append("**");
 			if (g != null) {
-				sb.append(" for ").append(g.getName()); //$NON-NLS-1$
+				sb.append(" for **").append(g.getName()).append("**");
 			}
 		}
 		return sb.toString();
+	}
+
+	/**
+	 * @param players
+	 * @return
+	 */
+	Collection<String> getPlayers(Collection<Player> players) {
+		Set<String> s = new HashSet<>();
+		for (Player p : players) {
+			s.add(p.getName());
+		}
+		return s;
 	}
 }

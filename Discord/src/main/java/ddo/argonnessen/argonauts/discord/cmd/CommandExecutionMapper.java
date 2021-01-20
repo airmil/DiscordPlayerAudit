@@ -24,6 +24,7 @@ public class CommandExecutionMapper {
 	static {
 		map.put(Command.COUNT, CountCommandExecution.class);
 		map.put(Command.WHO, WhoCommandExecution.class);
+		map.put(Command.HELP, HelpCommandExecution.class);
 	}
 
 	/**

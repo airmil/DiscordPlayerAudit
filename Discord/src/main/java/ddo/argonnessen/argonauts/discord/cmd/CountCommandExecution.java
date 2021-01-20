@@ -41,7 +41,7 @@ public class CountCommandExecution implements CommandExecution {
 	@Override
 	public String execute(CommandBean a) throws CommandException {
 		if (!Command.COUNT.equals(a.getCommand())) {
-			return null;
+			return emptyMessage();
 		}
 		CommandPayLoad payload = a.getPayload();
 		Server s = getServer(payload, serverRepository);
@@ -56,6 +56,7 @@ public class CountCommandExecution implements CommandExecution {
 	 * @param g
 	 * @return
 	 */
+	@SuppressWarnings("nls")
 	String getMessage(Integer count, Server s, Guild g) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("There are "); //$NON-NLS-1$
@@ -64,9 +65,9 @@ public class CountCommandExecution implements CommandExecution {
 		if (s == null) {
 			sb.append(" in DDO"); //$NON-NLS-1$
 		} else {
-			sb.append(" on ").append(s.getName()); //$NON-NLS-1$
+			sb.append(" on ").append("**").append(s.getName()).append("**");
 			if (g != null) {
-				sb.append(" for ").append(g.getName()); //$NON-NLS-1$
+				sb.append(" for ").append("**").append(g.getName()).append("**");
 			}
 		}
 		return sb.toString();

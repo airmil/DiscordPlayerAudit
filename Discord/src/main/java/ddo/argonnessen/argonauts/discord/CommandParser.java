@@ -13,7 +13,7 @@ public class CommandParser {
 	/**
 	 * 
 	 */
-	private static final String COMMAND_HEADER = "`"; //$NON-NLS-1$
+	public static final String COMMAND_HEADER = "~"; //$NON-NLS-1$
 
 
 	/**
