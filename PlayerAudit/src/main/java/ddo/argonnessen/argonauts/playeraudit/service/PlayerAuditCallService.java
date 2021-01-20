@@ -71,7 +71,7 @@ public class PlayerAuditCallService {
 	 * @param server
 	 */
 	void storeServer(ddo.argonnessen.argonauts.common.po.Server server) {
-		serverRepository.save(server);
+		serverRepository.saveAndFlush(server);
 		serverRepository.flush();
 	}
 
@@ -80,9 +80,9 @@ public class PlayerAuditCallService {
 	 */
 	void storePlayers(Set<ddo.argonnessen.argonauts.common.po.Player> playerPos) {
 		for (ddo.argonnessen.argonauts.common.po.Player player : playerPos) {
-			playerRepository.save(player);
+			playerRepository.saveAndFlush(player);
 		}
-
+		playerRepository.flush();
 	}
 
 	/**

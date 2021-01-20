@@ -3,7 +3,6 @@ package ddo.argonnessen.argonauts.discord;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import ddo.argonnessen.argonauts.discord.cmd.CommandExecution;
@@ -23,13 +22,26 @@ import reactor.core.publisher.Flux;
  * bot service
  */
 @Service
-public class Bot implements CommandLineRunner {
+public class Bot {
 
 	/**
 	 * 
 	 */
 	@Autowired
 	List<CommandExecution> map;
+
+	/**
+	 * 
+	 */
+	String token;
+	
+	/**
+	 * @param token
+	 *            the token to set
+	 */
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 	/**
 	 * register commands
@@ -50,9 +62,11 @@ public class Bot implements CommandLineRunner {
 	}
 
 
-	@Override
-	public void run(String... args) throws Exception {
-		GatewayDiscordClient client = DiscordClientBuilder.create(args[0]).build().login().block();
+	/**
+	 * execute
+	 */
+	public void execute() {
+		GatewayDiscordClient client = DiscordClientBuilder.create(token).build().login().block();
 		client.getEventDispatcher().on(ReadyEvent.class).subscribe(new BotReadyEvent());
 		registerCommand(client);
 		for (Command c : Command.values()) {
@@ -66,5 +80,7 @@ public class Bot implements CommandLineRunner {
 		}
 		client.onDisconnect().block();
 	}
+
+
 
 }

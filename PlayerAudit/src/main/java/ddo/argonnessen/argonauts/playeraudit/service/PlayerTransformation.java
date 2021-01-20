@@ -152,7 +152,7 @@ public class PlayerTransformation implements Transformation<Pair<Player, Server>
 	Classes createClass(ddo.argonnessen.argonauts.playeraudit.po.PlayerClass playerClass) {
 		Classes c = new Classes();
 		c.setName(playerClass.getName());
-		c = classesRepository.save(c);
+		c = classesRepository.saveAndFlush(c);
 		return c;
 	}
 
@@ -180,7 +180,7 @@ public class PlayerTransformation implements Transformation<Pair<Player, Server>
 		l.setIsPublicSpace(location.getIsPublicSpace());
 		l.setName(location.getName());
 		l.setRegion(location.getRegion());
-		l = locationRepository.save(l);
+		l = locationRepository.saveAndFlush(l);
 		return l;
 	}
 
@@ -204,7 +204,7 @@ public class PlayerTransformation implements Transformation<Pair<Player, Server>
 	Guild createGuild(Player a) {
 		Guild g = new Guild();
 		g.setName(a.getGuild());
-		g = guildRepository.save(g);
+		g = guildRepository.saveAndFlush(g);
 		return g;
 	}
 }

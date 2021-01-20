@@ -37,6 +37,9 @@ public interface CommandExecution {
 	default Guild getGuild(CommandPayLoad payload, GuildRepository guildRepository) throws CommandException {
 		if (payload != null && payload.size() > 1) {
 			String id = payload.get(1);
+			for (int i = 2; i < payload.size(); i++) {
+				id += " " + payload.get(i); //$NON-NLS-1$
+			}
 			Optional<Guild> g = guildRepository.findById(id);
 			if (!g.isPresent()) {
 				throw new CommandException("There is no guild with the name " + id); //$NON-NLS-1$
