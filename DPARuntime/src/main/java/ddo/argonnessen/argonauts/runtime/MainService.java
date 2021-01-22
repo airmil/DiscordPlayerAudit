@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import ddo.argonnessen.argonauts.discord.Bot;
-import ddo.argonnessen.argonauts.playeraudit.exception.PlayerAuditException;
 import ddo.argonnessen.argonauts.playeraudit.service.PlayerAuditCallService;
 
 /**
@@ -53,7 +52,7 @@ public class MainService {
 	private void updatePlayerAudit() {
 		try {
 			playerAudit.execute();
-		} catch (PlayerAuditException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

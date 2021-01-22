@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ddo.argonnessen.argonauts.arch.Pair;
 import ddo.argonnessen.argonauts.common.po.repository.PlayerRepository;
@@ -52,9 +53,10 @@ public class PlayerAuditCallService {
 	 * 
 	 * @throws PlayerAuditException
 	 */
+	@Transactional
 	public void execute() throws PlayerAuditException {
-		query.execute();
 		PlayerAudit audit = new PlayerAudit();
+		query.execute();
 		Collection<String> serverNames = audit.getServerNames();
 		for (String name : serverNames) {
 			Server server = audit.getServer(name);
