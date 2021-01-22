@@ -72,6 +72,7 @@ public class WhoCommandExecution implements CommandExecution {
 		StringBuilder sb = new StringBuilder();
 		if (players.size() == 0) {
 			sb.append("None is pressent");
+			return sb.toString();
 		}
 		if (players.size() > 1) {
 			sb.append("These are ");
