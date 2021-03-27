@@ -57,7 +57,7 @@ public class Player implements Named, Serializable {
 	 * 
 	 */
 	@Column(name = "groupid")
-	Integer groupId;
+	Long groupId;
 	/**
 	 * 
 	 */
@@ -146,14 +146,14 @@ public class Player implements Named, Serializable {
 	/**
 	 * @return the groupId
 	 */
-	public Integer getGroupId() {
+	public Long getGroupId() {
 		return groupId;
 	}
 	
 	/**
 	 * @param groupId the groupId to set
 	 */
-	public void setGroupId(Integer groupId) {
+	public void setGroupId(Long groupId) {
 		this.groupId = groupId;
 	}
 	

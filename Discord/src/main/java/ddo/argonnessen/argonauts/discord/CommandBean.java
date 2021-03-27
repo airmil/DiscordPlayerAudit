@@ -13,6 +13,14 @@ public class CommandBean {
 	 * 
 	 */
 	private CommandPayLoad payload = new CommandPayLoadImpl();
+	/**
+	 * the user who issued the command
+	 */
+	private String issuer;
+	/**
+	 * discord server that the command was issued
+	 */
+	private String discordServer;
 
 	/**
 	 * @return the command
@@ -42,5 +50,33 @@ public class CommandBean {
 	 */
 	public void setPayload(CommandPayLoad payload) {
 		this.payload = payload;
+	}
+
+	/**
+	 * @return the issuer
+	 */
+	public String getIssuer() {
+		return issuer;
+	}
+
+	/**
+	 * @param issuer the issuer to set
+	 */
+	public void setIssuer(String issuer) {
+		this.issuer = issuer;
+	}
+
+	/**
+	 * @return the discordServer
+	 */
+	public String getDiscordServer() {
+		return discordServer;
+	}
+
+	/**
+	 * @param discordServer the discordServer to set
+	 */
+	public void setDiscordServer(String discordServer) {
+		this.discordServer = discordServer;
 	}
 }

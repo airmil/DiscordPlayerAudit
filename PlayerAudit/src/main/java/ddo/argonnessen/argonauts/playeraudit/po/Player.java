@@ -36,7 +36,7 @@ public class Player implements Named {
 	/**
 	 * 
 	 */
-	Integer groupId;
+	Long groupId;
 	/**
 	 * 
 	 */
@@ -44,7 +44,7 @@ public class Player implements Named {
 	/**
 	 * 
 	 */
-	Boolean inParty;
+	Integer inParty;
 	
 	/**
 	 * @return the name
@@ -135,14 +135,14 @@ public class Player implements Named {
 	/**
 	 * @return the groupId
 	 */
-	public Integer getGroupId() {
+	public Long getGroupId() {
 		return groupId;
 	}
 	
 	/**
 	 * @param groupId the groupId to set
 	 */
-	public void setGroupId(Integer groupId) {
+	public void setGroupId(Long groupId) {
 		this.groupId = groupId;
 	}
 	
@@ -163,14 +163,14 @@ public class Player implements Named {
 	/**
 	 * @return the inParty
 	 */
-	public Boolean getInParty() {
+	public Integer getInParty() {
 		return inParty;
 	}
 	
 	/**
 	 * @param inParty the inParty to set
 	 */
-	public void setInParty(Boolean inParty) {
+	public void setInParty(Integer inParty) {
 		this.inParty = inParty;
 	}
 }

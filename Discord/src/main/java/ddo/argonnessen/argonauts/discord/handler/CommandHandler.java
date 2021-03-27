@@ -20,7 +20,7 @@ public class CommandHandler implements Predicate<Message>, Function<MessageChann
 	/**
 	 * 
 	 */
-	private CommandBean commandBean;
+	private ThreadLocal<CommandBean> commandBean = new ThreadLocal<CommandBean>();
 
 	/**
 	 * command parser
@@ -30,16 +30,18 @@ public class CommandHandler implements Predicate<Message>, Function<MessageChann
 	@Override
 	public boolean test(Message t) {
 		String lowerCase = t.getContent().toLowerCase();
-		commandBean = parser.parse(lowerCase);
-		return commandBean != null;
+		CommandBean parse = parser.parse(lowerCase);
+		commandBean.set(parse);
+		return parse != null;
 	}
 
 	@Override
 	public Publisher<Message> apply(MessageChannel t) {
-		CommandExecution commandExecution = commandBean.getCommand().getCommandExecution();
+		CommandBean bean = commandBean.get();
+		CommandExecution commandExecution = bean.getCommand().getCommandExecution();
 		String execute;
 		try {
-			execute = commandExecution.execute(commandBean);
+			execute = commandExecution.execute(bean);
 		} catch (CommandException e) {
 			execute = e.getMessage();
 		}

@@ -9,13 +9,13 @@ import javax.persistence.ManyToOne;
  * default choices per client
  */
 @Entity
-public class ClientDefaultChoices {
+public class PlayerDefaultChoices {
 
 	/**
 	 * discord server
 	 */
 	@Id
-	String discordServer;
+	String discordPlayerId;
 	/**
 	 * 
 	 */

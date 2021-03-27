@@ -19,13 +19,13 @@ import ddo.argonnessen.argonauts.common.po.Classes;
 import ddo.argonnessen.argonauts.common.po.Guild;
 import ddo.argonnessen.argonauts.common.po.Location;
 import ddo.argonnessen.argonauts.common.po.PlayerClass;
+import ddo.argonnessen.argonauts.common.po.Server;
 import ddo.argonnessen.argonauts.common.po.repository.ClassesRepository;
 import ddo.argonnessen.argonauts.common.po.repository.GuildRepository;
 import ddo.argonnessen.argonauts.common.po.repository.LocationRepository;
 import ddo.argonnessen.argonauts.common.po.repository.PlayerClassRepository;
 import ddo.argonnessen.argonauts.common.po.repository.ServerRepository;
 import ddo.argonnessen.argonauts.playeraudit.po.Player;
-import ddo.argonnessen.argonauts.playeraudit.po.Server;
 
 /**
  * 
@@ -77,11 +77,11 @@ public class PlayerTransformation implements Transformation<Pair<Player, Server>
 	ddo.argonnessen.argonauts.common.po.Player getPlayer(Pair<Player, Server> a) {
 		Player p=a.getLeft();
 		ddo.argonnessen.argonauts.common.po.Player player = new ddo.argonnessen.argonauts.common.po.Player();
-		player.getKey().setServer(getServer(a));
+		player.getKey().setServer(a.getRight());
 		player.setGender(p.getGender());
 		player.setGroupId(p.getGroupId());
 		player.setGuild(getGuild(p));
-		player.setInParty(p.getInParty());
+		player.setInParty(new Integer(1).equals(p.getInParty()));
 		player.setLocation(getLocation(p));
 		player.setName(getName(p));
 		player.setPlayerClasses(getPlayerClasses(p, player.getKey().getServer(), player));
@@ -103,15 +103,6 @@ public class PlayerTransformation implements Transformation<Pair<Player, Server>
 
 	/**
 	 * @param a
-	 * @return
-	 */
-	ddo.argonnessen.argonauts.common.po.Server getServer(Pair<Player, Server> a) {
-		ddo.argonnessen.argonauts.common.po.Server s = serverRepository.findById(a.getRight().getName()).get();
-		return s;
-	}
-
-	/**
-	 * @param a
 	 * @param server
 	 * @param player
 	 * @return
@@ -121,10 +112,14 @@ public class PlayerTransformation implements Transformation<Pair<Player, Server>
 		Set<PlayerClass> classesSet = new HashSet<PlayerClass>();
 		Set<ddo.argonnessen.argonauts.playeraudit.po.PlayerClass> classes = a.getClasses();
 		for (ddo.argonnessen.argonauts.playeraudit.po.PlayerClass playerClass : classes) {
+			Classes c = getClass(playerClass);
+			if (c == null) {
+				continue;
+			}
 			PlayerClass pc = new PlayerClass();
 			pc.setLevel(playerClass.getLevel());
 			pc.getKey().setName(a.getName());
-			pc.getKey().setClasses(getClass(playerClass));
+			pc.getKey().setClasses(c);
 			pc.getKey().setServer(server);
 			pc.setPlayer(player);
 			classesSet.add(pc);
@@ -137,7 +132,11 @@ public class PlayerTransformation implements Transformation<Pair<Player, Server>
 	 * @return
 	 */
 	Classes getClass(ddo.argonnessen.argonauts.playeraudit.po.PlayerClass playerClass) {
-		Optional<Classes> findById = classesRepository.findById(playerClass.getName());
+		String name = playerClass.getName();
+		if (name == null) {
+			return null;
+		}
+		Optional<Classes> findById = classesRepository.findById(name);
 		if (!findById.isPresent()) {
 			Classes c = createClass(playerClass);
 			return c;
@@ -161,7 +160,11 @@ public class PlayerTransformation implements Transformation<Pair<Player, Server>
 	 * @return
 	 */
 	Location getLocation(Player a) {
-		Optional<Location> findById = locationRepository.findById(a.getLocation().getHexId());
+		String hexId = a.getLocation().getHexId();
+		if (hexId == null) {
+			return null;
+		}
+		Optional<Location> findById = locationRepository.findById(hexId);
 		if (!findById.isPresent()) {
 			Location l = createLocation(a);
 			return l;

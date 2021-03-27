@@ -18,7 +18,11 @@ public enum Command {
 	/**
 	 * help
 	 */
-	HELP;
+	HELP,
+	/**
+	 * default choices
+	 */
+	DEFAULT;
 
 	/**
 	 * commandExecution to set

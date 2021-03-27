@@ -5,18 +5,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonReader;
 
 import ddo.argonnessen.argonauts.playeraudit.exception.PlayerAuditException;
+import ddo.argonnessen.argonauts.playeraudit.po.Player;
 import ddo.argonnessen.argonauts.playeraudit.po.Server;
 
 /**
@@ -27,21 +25,20 @@ public class PlayerAudit {
 	/**
 	 * API URL
 	 */
-	private static final String URL = "https://www.playeraudit.com/api/players"; //$NON-NLS-1$
-	/**
-	 * servers
-	 */
-	Map<String, Server> servers = new HashMap<String, Server>();
+	private static final String URL = "https://www.playeraudit.com/api/players?s="; //$NON-NLS-1$
 
 	/**
-	 * constructor
+	 * 
+	 * @param serverName
+	 * @return players
 	 * 
 	 * @throws PlayerAuditException
 	 */
-	public PlayerAudit() throws PlayerAuditException {
+	public Set<Player> getServer(String serverName) throws PlayerAuditException {
+		Set<Player> players = new HashSet<Player>();
 		URL u;
 		try {
-			u = new URL(URL);
+			u = new URL(URL + serverName);
 		} catch (MalformedURLException e) {
 			throw new PlayerAuditException(e);
 		}
@@ -54,25 +51,11 @@ public class PlayerAudit {
 		InputStreamReader isr = new InputStreamReader(stream);
 		Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 		JsonReader reader = new JsonReader(isr);
-		JsonArray ja = gson.fromJson(reader, JsonArray.class);
-		for (JsonElement jsonElement : ja) {
-			Server server = gson.fromJson(jsonElement, Server.class);
-			servers.put(server.getName(), server);
+		Server s = gson.fromJson(reader, Server.class);
+		if (s == null) {
+			return players;
 		}
+		return s.getPlayers();
 	}
 
-	/**
-	 * @param name
-	 * @return server based on name
-	 */
-	public Server getServer(String name) {
-		return servers.get(name);
-	}
-
-	/**
-	 * @return the names of all servers
-	 */
-	public Collection<String> getServerNames() {
-		return servers.keySet();
-	}
 }

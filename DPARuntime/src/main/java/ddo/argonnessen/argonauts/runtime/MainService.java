@@ -49,7 +49,7 @@ public class MainService {
 	/**
 	 * 
 	 */
-	private void updatePlayerAudit() {
+	void updatePlayerAudit() {
 		try {
 			playerAudit.execute();
 		} catch (Exception e) {

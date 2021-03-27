@@ -20,7 +20,7 @@ public class Location {
 	/**
 	 * 
 	 */
-	Boolean isPublicSpace;
+	Integer isPublicSpace;
 	/**
 	 * 
 	 */
@@ -60,7 +60,7 @@ public class Location {
 	 * @return the isPublicSpace
 	 */
 	public Boolean getIsPublicSpace() {
-		return isPublicSpace;
+		return isPublicSpace != null && isPublicSpace > 0;
 	}
 
 	/**
@@ -68,7 +68,10 @@ public class Location {
 	 *            the isPublicSpace to set
 	 */
 	public void setIsPublicSpace(Boolean isPublicSpace) {
-		this.isPublicSpace = isPublicSpace;
+		if (isPublicSpace == null) {
+			this.isPublicSpace = null;
+		}
+		this.isPublicSpace = isPublicSpace ? 1 : 0;
 	}
 
 	/**
