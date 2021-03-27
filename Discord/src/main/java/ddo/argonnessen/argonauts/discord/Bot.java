@@ -71,6 +71,9 @@ public class Bot {
 		registerCommand(client);
 		for (Command c : Command.values()) {
 			Class<? extends CommandExecution> commandExecution = CommandExecutionMapper.getCommandExecution(c);
+			if (commandExecution == null) {
+				continue;
+			}
 			for (CommandExecution ce : map) {
 				if (commandExecution.equals(ce.getClass())) {
 					c.setCommandExecution(ce);
