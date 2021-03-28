@@ -17,7 +17,7 @@
 		<!-- junit -->
 		<version.junit>4.13.1</version.junit>
 		<!-- mariadb -->
-		<version.mysql>8.0.22</version.mysql>
+		<version.mysql>8.0.23</version.mysql>
 		<!-- apache commons -->
 		<version.commons-lang>3.11</version.commons-lang>
 	</properties>
